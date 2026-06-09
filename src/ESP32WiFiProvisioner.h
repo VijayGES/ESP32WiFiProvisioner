@@ -1,9 +1,22 @@
 #ifndef ESP32_WIFI_PROVISIONER_H
 #define ESP32_WIFI_PROVISIONER_H
 
+#if defined(ESP32)
+
 #include <WiFi.h>
 #include <WebServer.h>
 #include <DNSServer.h>
+
+#elif defined(ESP8266)
+
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <DNSServer.h>
+
+#else
+#error "Unsupported board. Only ESP32 and ESP8266 are supported."
+#endif
+
 #include <vector>
 #include <functional>
 
@@ -38,8 +51,14 @@ private:
     String generateHTML();
 
     DNSServer dns;
-    WebServer server;
-    bool running;
+
+	#if defined(ESP32)
+		WebServer server;
+	#elif defined(ESP8266)
+		ESP8266WebServer server;
+	#endif
+
+	bool running;
 
     ResultCallback callback;
     std::vector<Field> customFields;
