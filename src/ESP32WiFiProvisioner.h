@@ -49,6 +49,9 @@ private:
     void handleScan();
 
     String generateHTML();
+	
+	String apSsid;
+    String apPassword;
 
     DNSServer dns;
 
