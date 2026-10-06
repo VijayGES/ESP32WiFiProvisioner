@@ -7,6 +7,10 @@ void ESP32WiFiProvisioner::begin(const char* apSsid,
                                  const char* apPassword,
                                  ResultCallback cb) {
     callback = cb;
+	
+	this->apSsid = apSsid;
+    this->apPassword = apPassword;
+	
     startAP();
     setupServer();
     running = true;
@@ -18,7 +22,7 @@ void ESP32WiFiProvisioner::addField(const String& name, const String& label) {
 
 void ESP32WiFiProvisioner::startAP() {
     WiFi.mode(WIFI_AP);
-    WiFi.softAP("ESP32_Setup", "12345678");
+    WiFi.softAP(apSsid.c_str(), apPassword.c_str());
     dns.start(53, "*", WiFi.softAPIP());
 }
 
@@ -189,4 +193,3 @@ String ESP32WiFiProvisioner::generateHTML() {
 
     return html;
 }
-
